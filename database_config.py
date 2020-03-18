@@ -6,11 +6,14 @@ class DatabaseConfig:
     def __init__(self, config_file='db.conf'):
         self.config = configparser.ConfigParser()
         self.config_file = config_file
-        self.__db_address = None
-        self.__db_user = None
-        self.__db_password = None
-        self.__db_name = None
+        self.__address = None
+        self.__username = None
+        self.__password = None
+        self.__database = None
         self.read_config()
+
+    def __str__(self):
+        return f"ServerAddress: '{self.__address}' Username: '{self.__username}' Password: '{self.__password}' Database: '{self.__database}'"
 
     def read_config(self):
         self.config.read(self.config_file)
@@ -29,22 +32,22 @@ class DatabaseConfig:
                     f"Field {field} doesn't exist in database section of config file")
 
         # If all fields are present, set the attributes
-        self.__db_address = config_section['ServerAddress']
-        self.__db_user = config_section['Username']
-        self.__db_password = config_section['Password']
-        self.__db_name = config_section['DatabaseName']
+        self.__address = config_section['ServerAddress']
+        self.__username = config_section['Username']
+        self.__password = config_section['Password']
+        self.__database = config_section['DatabaseName']
 
     def get_address(self):
-        return self.__db_address
+        return self.__address
 
     def get_user(self):
-        return self.__db_user
+        return self.__username
 
     def get_password(self):
-        return self.__db_password
+        return self.__password
 
     def get_name(self):
-        return self.__db_name
+        return self.__database
 
 
 class SectionNotPresent(Exception):

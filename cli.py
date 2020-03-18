@@ -9,11 +9,17 @@ class Menu(Cmd):
         Cmd.__init__(self)
         self.prompt = ">>> "
 
-    def do_dbconfig(self, file_path):
+    def do_dbconfig(self, file_path: str):
+        """
+        Syntax: dbconfig [file_path]
+        Load the specified database config from file
+        :param file_path: a string representing the path to the database config file
+        :return: None
+        """
         if file_path:
             print(f"Reading config file {file_path}")
             database_config = DatabaseConfig(file_path)
-            print(f"{database_config.get_user()} {database_config.get_password()}")
+            print(database_config)
         else:
             print('file path not specified')
 
