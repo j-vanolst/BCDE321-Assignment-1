@@ -1,6 +1,6 @@
 import sqlite3
 
-from database import Database
+from .database import Database
 
 
 class Sqlite(Database):

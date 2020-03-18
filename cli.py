@@ -1,6 +1,7 @@
 from cmd import Cmd
 
 from database_config import DatabaseConfig
+from database.mysqldb import MySQLDB
 
 
 class Menu(Cmd):
@@ -8,6 +9,8 @@ class Menu(Cmd):
     def __init__(self):
         Cmd.__init__(self)
         self.prompt = ">>> "
+        self.dbconfig = None
+        self.db = None
 
     def do_dbconfig(self, file_path: str):
         """
@@ -18,10 +21,50 @@ class Menu(Cmd):
         """
         if file_path:
             print(f"Reading config file {file_path}")
-            database_config = DatabaseConfig(file_path)
-            print(database_config)
+            self.dbconfig = DatabaseConfig(file_path)
+            print(self.dbconfig)
         else:
             print('file path not specified')
+
+    def do_dbconnect(self, line):
+        """
+        Syntax: dbconnect
+        Connect to the database after loading configuration from file
+        :return: None
+        """
+        # Check if we have loaded a database configuration
+        if self.dbconfig:
+            self.db = MySQLDB(address=self.dbconfig.get_address(), username=self.dbconfig.get_username(),
+                              password=self.dbconfig.get_password(), database=self.dbconfig.get_database())
+            self.db.connect()
+        else:
+            print("You have not loaded a database config using dbconfig")
+
+    def do_dbquery(self, sql: str):
+        """
+        Syntax: dbquery [sql]
+        Execute the specified sql query
+        :param sql: a string representing the sql query
+        :return: None
+        """
+        # Check if we have connected to a database
+        if self.db:
+            self.db.query(sql)
+        else:
+            print("You have not connected to a database using dbconnect")
+
+    def do_dbfetch(self, sql: str):
+        """
+        Syntax: dbquery [sql]
+        Execute the specified sql query
+        :param sql: a string representing the sql query
+        :return: None
+        """
+        # Check if we have connected to a database
+        if self.db:
+            print(self.db.fetch(sql))
+        else:
+            print("You have not connected to a database using dbconnect")
 
     def do_quit(self, line):
         print("Quitting...")

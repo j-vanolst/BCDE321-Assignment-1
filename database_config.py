@@ -40,13 +40,13 @@ class DatabaseConfig:
     def get_address(self):
         return self.__address
 
-    def get_user(self):
+    def get_username(self):
         return self.__username
 
     def get_password(self):
         return self.__password
 
-    def get_name(self):
+    def get_database(self):
         return self.__database
 
 
