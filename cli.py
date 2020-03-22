@@ -1,7 +1,9 @@
 from cmd import Cmd
 
+# Local Imports
 from database_config import DatabaseConfig
 from database.mysqldb import MySQLDB
+from analyser.file_analyser import FileAnalyser
 
 
 class Menu(Cmd):
@@ -65,6 +67,16 @@ class Menu(Cmd):
             print(self.db.fetch(sql))
         else:
             print("You have not connected to a database using dbconnect")
+
+    def do_analyse(self, file_path: str):
+        """
+        Syntax: analyse [file_path]
+        Run an analysis on a file
+        :param file_path: a string representing the path to the file for analysis
+        :return: None
+        """
+        file_analyser = FileAnalyser(file_path)
+        print(file_analyser)
 
     def do_quit(self, line):
         print("Quitting...")
