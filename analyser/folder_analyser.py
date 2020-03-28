@@ -38,6 +38,7 @@ class FolderAnalyser:
 
     def run_analysis(self):
         file_analyser = FileAnalyser('joined.py')
+        os.remove('joined.py')
         return file_analyser
 
     def get_analysis(self):
