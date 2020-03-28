@@ -1,7 +1,7 @@
 from abc import ABCMeta, abstractmethod
 
 
-class Database(ABCMeta):
+class Database(metaclass=ABCMeta):
 
     def __init__(self, database: str, address: str = None, username: str = None, password: str = None):
         self.address = address

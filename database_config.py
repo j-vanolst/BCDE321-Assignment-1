@@ -10,10 +10,11 @@ class DatabaseConfig:
         self.__username = None
         self.__password = None
         self.__database = None
+        self.__type = None
         self.read_config()
 
     def __str__(self):
-        return f"ServerAddress: '{self.__address}' Username: '{self.__username}' Password: '{self.__password}' Database: '{self.__database}'"
+        return f"ServerAddress: '{self.__address}' Username: '{self.__username}' Password: '{self.__password}' Database: '{self.__database}' Type: '{self.__type}'"
 
     def read_config(self):
         self.config.read(self.config_file)
@@ -25,7 +26,8 @@ class DatabaseConfig:
             raise SectionNotPresent('Database section not present')
 
         # Check if the fields exist in the database section
-        fields = ['ServerAddress', 'Username', 'Password', 'DatabaseName']
+        fields = ['ServerAddress', 'Username',
+                  'Password', 'DatabaseName', 'Type']
         for field in fields:
             if not field in config_section:
                 raise FieldNotPresent(
@@ -36,6 +38,7 @@ class DatabaseConfig:
         self.__username = config_section['Username']
         self.__password = config_section['Password']
         self.__database = config_section['DatabaseName']
+        self.__type = config_section['Type']
 
     def get_address(self):
         return self.__address
@@ -48,6 +51,9 @@ class DatabaseConfig:
 
     def get_database(self):
         return self.__database
+
+    def get_type(self):
+        return self.__type
 
 
 class SectionNotPresent(Exception):

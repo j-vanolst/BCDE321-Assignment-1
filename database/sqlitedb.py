@@ -17,7 +17,7 @@ class Sqlite(Database):
 
     def query(self, sql: str):
         self.connect()
-
+        self.db.execute(sql)
         try:
             self.db.execute(sql)
             print(f"Successfully exectued query: {sql}")

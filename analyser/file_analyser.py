@@ -20,6 +20,7 @@ class FileAnalyser:
             file = open(self.file_path, 'r')
 
             lines = file.read()
+            file.close()
             lines = lines.split('\n')
 
             return lines
@@ -70,7 +71,7 @@ class FileAnalyser:
             if i + 1 == len(self.class_indexes):
                 class_definition = self.lines[self.class_indexes[i]:]
             else:
-                class_definition = self.lines[self.class_indexes[i]                                              :self.class_indexes[i+1]]
+                class_definition = self.lines[self.class_indexes[i]:self.class_indexes[i+1]]
             class_definitions.append(class_definition)
 
         return class_definitions
