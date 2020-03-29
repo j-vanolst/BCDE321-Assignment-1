@@ -16,8 +16,10 @@ class MySQLDB(Database):
             self.db = mysql.connector.connect(
                 host=self.address, user=self.username, passwd=self.password, database=self.database)
             print("Successfully connected to the database.")
+            return True
         except:
             print("Error connecting to the database.")
+            return False
 
     def query(self, sql: str):
         """
@@ -50,10 +52,3 @@ class MySQLDB(Database):
         except:
             print(f"Error executing query: {sql}")
             return False
-
-
-# test = MySQLDB('127.0.0.1', 'root', 'test', 'python_uml')
-# print(test)
-# test.connect()
-# test.query("insert into test values ('jos')")
-# print(test.fetch('select * from test'))

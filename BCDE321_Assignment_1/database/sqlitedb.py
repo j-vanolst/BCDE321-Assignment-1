@@ -12,18 +12,21 @@ class Sqlite(Database):
         try:
             self.db = sqlite3.connect(self.database)
             print('Successfully opened database.')
+            return True
         except:
             print('Error opening database.')
+            return False
 
     def query(self, sql: str):
         self.connect()
-        self.db.execute(sql)
         try:
             self.db.execute(sql)
             print(f"Successfully exectued query: {sql}")
             self.db.commit()
+            return True
         except:
             print(f"Error executing query: {sql}")
+            return False
 
         self.db.close()
 
@@ -45,10 +48,3 @@ class Sqlite(Database):
             return False
 
         self.db.close()
-
-
-# test = Sqlite(database='test.db')
-# test.connect()
-# test.query('create table test (name text, age int)')
-# test.query("insert into test values ('jos', 22)")
-# print(test.fetch("select * from test"))
