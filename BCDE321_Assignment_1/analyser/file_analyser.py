@@ -1,6 +1,6 @@
 import re
 
-from .class_definition import ClassAnalyser
+from .class_analyser import ClassAnalyser
 
 
 class FileAnalyser:
