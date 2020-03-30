@@ -5,21 +5,24 @@ from .database import Database
 
 class MySQLDB(Database):
 
-    def __init__(self, address: str, username: str, password: str, database: str):
+    def __init__(self, address: str, username: str, password: str,
+                 database: str):
         super().__init__(address=address, username=username,
                          password=password, database=database)
 
     def connect(self):
         self.db = mysql.connector.connect(
-            host=self.address, user=self.username, passwd=self.password, database=self.database)
+            host=self.address, user=self.username, passwd=self.password,
+            database=self.database)
         try:
             self.db = mysql.connector.connect(
-                host=self.address, user=self.username, passwd=self.password, database=self.database)
+                host=self.address, user=self.username, passwd=self.password,
+                database=self.database)
             print("Successfully connected to the database.")
             return True
-        except:
+        except DatabaseConnectError:
             print("Error connecting to the database.")
-            return False
+            raise DatabaseConnectError("Error connecting to the database.")
 
     def query(self, sql: str):
         """
@@ -33,8 +36,9 @@ class MySQLDB(Database):
             self.db.commit()
             self.cursor.close()
             self.db.close()
-        except:
+        except DatabaseQueryError:
             print(f"Error executing query: {sql}")
+            raise DatabaseQueryError(f"Could not execute query {sql}")
 
     def fetch(self, sql: str):
         """
@@ -49,6 +53,37 @@ class MySQLDB(Database):
             self.cursor.close()
             self.db.close()
             return results
-        except:
+
+        except DatabaseQueryError:
             print(f"Error executing query: {sql}")
-            return False
+            raise DatabaseQueryError(f"Could not execute query {sql}")
+
+
+class DatabaseConnectError(Exception):
+
+    def __init__(self, *args):
+        if args:
+            self.message = args[0]
+        else:
+            self.message = None
+
+    def __str__(self):
+        if self.message:
+            return f"DatabaseConnectError, {self.message}"
+        else:
+            return "DatabaseConnectError has been raised"
+
+
+class DatabaseQueryError(Exception):
+
+    def __init__(self, *args):
+        if args:
+            self.message = args[0]
+        else:
+            self.message = None
+
+    def __str__(self):
+        if self.message:
+            return f"DatabaseQueryError, {self.message}"
+        else:
+            return "DatabaseQueryError has been raised"

@@ -13,9 +13,9 @@ class Sqlite(Database):
             self.db = sqlite3.connect(self.database)
             print('Successfully opened database.')
             return True
-        except:
+        except DatabaseConnectError:
             print('Error opening database.')
-            return False
+            raise DatabaseConnectError('Could not connect to database')
 
     def query(self, sql: str):
         self.connect()
@@ -24,9 +24,9 @@ class Sqlite(Database):
             print(f"Successfully exectued query: {sql}")
             self.db.commit()
             return True
-        except:
+        except DatabaseQueryError:
             print(f"Error executing query: {sql}")
-            return False
+            raise DatabaseQueryError(f"Could not execute query {sql}")
 
         self.db.close()
 
@@ -43,8 +43,39 @@ class Sqlite(Database):
                 results.append(result)
 
             return results
-        except:
+
+        except DatabaseQueryError:
             print(f"Error executing query: {sql}")
-            return False
+            raise DatabaseQueryError(f"Could not execute query {sql}")
 
         self.db.close()
+
+
+class DatabaseConnectError(Exception):
+
+    def __init__(self, *args):
+        if args:
+            self.message = args[0]
+        else:
+            self.message = None
+
+    def __str__(self):
+        if self.message:
+            return f"DatabaseConnectError, {self.message}"
+        else:
+            return "DatabaseConnectError has been raised"
+
+
+class DatabaseQueryError(Exception):
+
+    def __init__(self, *args):
+        if args:
+            self.message = args[0]
+        else:
+            self.message = None
+
+    def __str__(self):
+        if self.message:
+            return f"DatabaseQueryError, {self.message}"
+        else:
+            return "DatabaseQueryError has been raised"

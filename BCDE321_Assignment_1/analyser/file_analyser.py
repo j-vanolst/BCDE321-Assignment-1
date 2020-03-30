@@ -25,7 +25,7 @@ class FileAnalyser:
 
             return lines
 
-        except:
+        except FileNotFoundError:
             raise FileNotFoundError(f"Could not find file {self.file_path}")
 
     def get_classes_indexes(self):
@@ -71,7 +71,8 @@ class FileAnalyser:
             if i + 1 == len(self.class_indexes):
                 class_definition = self.lines[self.class_indexes[i]:]
             else:
-                class_definition = self.lines[self.class_indexes[i]:self.class_indexes[i+1]]
+                class_definition = self.lines[self.class_indexes[i]:
+                                              self.class_indexes[i+1]]
             class_definitions.append(class_definition)
 
         return class_definitions
@@ -98,9 +99,3 @@ class FileAnalyser:
             output_string += str(class_analyser)
 
         return output_string
-
-
-# a = FileAnalyser('database_config.py')
-# # for class_analyser in a.class_analysers:
-# #     print(class_analyser)
-# print(a)

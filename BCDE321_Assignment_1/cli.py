@@ -21,7 +21,8 @@ class Menu(Cmd):
         """
         Syntax: dbconfig [file_path]
         Load the specified database config from file
-        :param file_path: a string representing the path to the database config file
+        :param file_path: a string representing the path to the database
+        config file
         :return: None
         """
         if file_path:
@@ -41,8 +42,10 @@ class Menu(Cmd):
         if self.dbconfig:
             # Determine what type of database we are using
             if self.dbconfig.get_type() == 'mysql':
-                self.db = MySQLDB(address=self.dbconfig.get_address(), username=self.dbconfig.get_username(),
-                                  password=self.dbconfig.get_password(), database=self.dbconfig.get_database())
+                self.db = MySQLDB(address=self.dbconfig.get_address(),
+                                  username=self.dbconfig.get_username(),
+                                  password=self.dbconfig.get_password(),
+                                  database=self.dbconfig.get_database())
                 self.db.connect()
             elif self.dbconfig.get_type() == 'sqlite':
                 self.db = Sqlite(self.dbconfig.get_database())
@@ -53,12 +56,17 @@ class Menu(Cmd):
     def do_dbcreatetable(self, line):
         """
         Syntax: dbcreatetable
-        Creates a table for storing analyses if the table doesn't already exist
+        Creates a table for storing analyses if the table doesn't
+        already exist
         :return: None
         """
-        sql = 'create table if not exists analysis (id int primary key auto_increment, analysis varchar(100000), path varchar(100))'
+        sql = 'create table if not exists analysis\
+            (id int primary key auto_increment, analysis varchar(100000),\
+                path varchar(100))'
         if self.dbconfig.get_type() == 'sqlite':
-            sql = 'create table if not exists analysis (id integer primary key autoincrement, analysis varchar(100000), path varchar(100))'
+            sql = 'create table if not exists analysis\
+                (id integer primary key autoincrement,\
+                    analysis varchar(100000), path varchar(100))'
         if self.db:
             self.db.query(sql)
         else:
@@ -79,7 +87,8 @@ class Menu(Cmd):
     def do_dbselectanalysis(self, analysis):
         """
         Syntax dbselectanalysis [analysis]
-        Return an analysis from the database, you can get a list of stored analyses with the dblistanalyses command
+        Return an analysis from the database, you can get a list of stored
+        analyses with the dblistanalyses command
         :param analysis: a string representing the record you want to access
         :return: None
         """
@@ -119,33 +128,39 @@ class Menu(Cmd):
         """
         Syntax: analyse [file_path]
         Run an analysis on a file
-        :param file_path: a string representing the path to the file for analysis
+        :param file_path: a string representing the path to the file for
+        analysis
         :return: None
         """
         file_analyser = FileAnalyser(path)
         print(file_analyser)
 
         if self.db:
-            sql = f"insert into analysis (analysis, path) values ('{str(file_analyser)}', '{path}')"
+            sql = f"insert into analysis (analysis, path) values\
+                ('{str(file_analyser)}', '{path}')"
             self.do_dbquery(sql)
         else:
-            print("If you want the analysis stored in the database, please connect to a database using dbconnect first.")
+            print("If you want the analysis stored in the database,\
+                please connect to a database using dbconnect first.")
 
     def do_analyse_folder(self, path: str):
         """
         Syntax: analyse [folder_path]
         Run an analysis on a folder
-        :param folder_path: a string representing the path to the folder for analysis
+        :param folder_path: a string representing the path to the folder
+        for analysis
         :return: None
         """
         folder_analyser = FolderAnalyser(path)
         print(folder_analyser)
 
         if self.db:
-            sql = f"insert into analysis (analysis, path) values ('{str(folder_analyser)}', '{path}')"
+            sql = f"insert into analysis (analysis, path) values\
+                ('{str(folder_analyser)}', '{path}')"
             self.do_dbquery(sql)
         else:
-            print("If you want the analysis stored in the database, please connect to a database using dbconnect first.")
+            print("If you want the analysis stored in the database,\
+                please connect to a database using dbconnect first.")
 
     def do_graph(self, path: str):
         """

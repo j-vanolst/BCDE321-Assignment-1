@@ -3,7 +3,8 @@ from abc import ABCMeta, abstractmethod
 
 class Database(metaclass=ABCMeta):
 
-    def __init__(self, database: str, address: str = None, username: str = None, password: str = None):
+    def __init__(self, database: str, address: str = None,
+                 username: str = None, password: str = None):
         self.address = address
         self.username = username
         self.password = password
@@ -12,7 +13,8 @@ class Database(metaclass=ABCMeta):
         self.cursor = None
 
     def __str__(self):
-        return(f"ServerAddress: '{self.address}' Username: '{self.username}' Password: '{self.password}' Database: '{self.database}'")
+        return(f"ServerAddress: '{self.address}' Username: '{self.username}'\
+            Password: '{self.password}' Database: '{self.database}'")
 
     @abstractmethod
     def connect(self):
@@ -25,3 +27,4 @@ class Database(metaclass=ABCMeta):
     @abstractmethod
     def fetch(self):
         pass
+

@@ -14,7 +14,9 @@ class DatabaseConfig:
         self.read_config()
 
     def __str__(self):
-        return f"ServerAddress: '{self.__address}' Username: '{self.__username}' Password: '{self.__password}' Database: '{self.__database}' Type: '{self.__type}'"
+        return f"ServerAddress: '{self.__address}'\
+            Username: '{self.__username}' Password: '{self.__password}'\
+                Database: '{self.__database}' Type: '{self.__type}'"
 
     def read_config(self):
         self.config.read(self.config_file)
@@ -29,9 +31,10 @@ class DatabaseConfig:
         fields = ['ServerAddress', 'Username',
                   'Password', 'DatabaseName', 'Type']
         for field in fields:
-            if not field in config_section:
+            if field not in config_section:
                 raise FieldNotPresent(
-                    f"Field {field} doesn't exist in database section of config file")
+                    f"Field {field} doesn't exist in database section of\
+                        config file")
 
         # If all fields are present, set the attributes
         self.__address = config_section['ServerAddress']

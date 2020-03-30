@@ -63,7 +63,8 @@ class ClassAnalyser:
 
         for method_name in self.method_names:
             output_string += '\t' + method_name + '\n'
-            output_string += f"\t\t {len(self.method_parameters[method_name])} Parameter(s) \n"
+            output_string += f"\t\t {len(self.method_parameters[method_name])}\
+                Parameter(s) \n"
             for attribute in self.method_parameters[method_name]:
                 output_string += '\t\t' + attribute.lstrip() + '\n'
 
